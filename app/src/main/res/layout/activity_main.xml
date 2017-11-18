@@ -1,78 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     android:paddingBottom="@dimen/activity_vertical_margin"
-    tools:context="com.plorence.jskakaobot.MainActivity">
+    tools:context="com.plorence.jskakaobot.MainActivity"
+    android:orientation="vertical">
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="3dp">
+        <Switch
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="온 / 오프"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/switch1" android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
+            android:switchPadding="20dp" android:checked="false"/>
 
-    <Switch
-        android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/switch1"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center_horizontal"
+            android:text="Android Wear 앱 필요\n알림 확인 권한 필요"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="#ff0000" />
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview1"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="온 / 오프"
-        android:id="@+id/switch1" android:layout_alignParentTop="true" android:layout_centerHorizontal="true"
-        android:switchPadding="20dp" android:checked="false"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Android Wear 앱 필요\n알림 확인 권한 필요"
-        android:id="@+id/textView"
-        android:layout_marginTop="24dp" android:layout_below="@+id/switch1" android:layout_centerHorizontal="true"
-        android:textColor="#ff0000"/>
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="3dp">
     <Button
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="권한 설정하러 가기"
-        android:id="@+id/button" android:layout_below="@+id/textView" android:layout_centerHorizontal="true"
-        android:layout_marginTop="22dp" android:nestedScrollingEnabled="false" android:onClick="onSettingsClick"/>
+        android:layout_gravity="center_horizontal"
+        android:id="@+id/button"
+        android:layout_marginTop="2dp"  android:onClick="onSettingsClick"/>
     <Button
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="스크립트 리로드"
         android:id="@+id/button2"
-        android:layout_below="@+id/button" android:layout_centerHorizontal="true" android:onClick="onReloadClick"/>
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_below="@+id/button" android:onClick="onReloadClick"/>
     <Button
         style="@style/Widget.AppCompat.Button.Borderless.Colored"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="스크립트 편집"
         android:id="@+id/button3"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="80dp"
+        android:layout_gravity="center_horizontal"
         android:layout_below="@+id/button2"
-        android:layout_centerHorizontal="true"
         android:onClick="edittor"/>
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/button3"
-        android:layout_centerHorizontal="true"
-        android:textSize="18dp"
-        android:layout_marginTop="41dp"
-        android:text="TextView" />
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView2"
-        android:layout_centerHorizontal="true"
-        android:textSize="18dp"
-        android:layout_marginTop="10dp"
-        android:text="TextView" />
+        android:layout_margin="5dp"
+        card_view:cardCornerRadius="3dp">
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView2"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:textSize="18dp"
+            android:layout_marginTop="10dp"
+            android:text="TextView" />
+
+    </android.support.v7.widget.CardView>
+
     <TextView
         android:id="@+id/textView4"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView3"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
         android:text="깃허브:https://github.com/zxc010613" />
     <TextView
         android:id="@+id/textView5"
@@ -80,6 +105,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView4"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="5dp"
-        android:text="Jsoup,Tedpermission 라이브러릴 사용했습니다." />
-</RelativeLayout>
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:text="Jsoup,Tedpermission 라이브러리를 사용했습니다." />
+</LinearLayout>

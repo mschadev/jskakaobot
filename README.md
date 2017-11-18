@@ -19,6 +19,8 @@
 -reply(String Value)<br>
 -CurrentTime()<br>
 -parsing(final String url, final String tag)<br>
+-CoinParsing(final String URL)<br>
+-CoinParsingAll(final String URL)<br>
 각 메서드 별 사용법은 안드로이드 프로젝트 내에 주석처리 되어있으니, 참고 부탁드립니다.<br>
 필요한건 직접 만들어서 사용하셔도 됩니다.<br>
 <br>

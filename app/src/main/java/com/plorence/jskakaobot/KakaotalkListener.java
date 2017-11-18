@@ -14,11 +14,15 @@ import android.service.notification.StatusBarNotification;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.select.Elements;
 import org.mozilla.javascript.*;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -27,6 +31,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -36,6 +41,7 @@ import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -133,14 +139,7 @@ public class KakaotalkListener extends NotificationListenerService {
         else{
             isGroupChat = true;
         }
-        /*if (msg instanceof String) {
-            _msg = (String) msg;
-        } else {
-            String html = Html.toHtml((SpannableString) msg);
-            sender = Html.fromHtml(html.split("<b>")[1].split("</b>")[0]).toString();
-            _msg = Html.fromHtml(html.split("</b>")[1].split("</p>")[0].substring(1)).toString();
-        }
-        */
+
 
         try {
             responder.call(parseContext, execScope, execScope, new Object[] { room, msg, sender,isGroupChat, new SessionCacheReplier(session) });
@@ -199,6 +198,135 @@ public class KakaotalkListener extends NotificationListenerService {
             th.start();
             th.join();
             return string[0];
+        }
+        public String CoinParsing(final String URL) throws InterruptedException {
+            /**
+             * 해당 코인의 현재 가격을 뽑아옵니다.
+             * 사용법↓
+             * var ParsingData = replier.CoinParsing("https://api.bithumb.com/public/ticker/BTC");
+             replier.reply("현재 비트코인 가격은 "+ParsingData+"원 입니다.");
+             */
+            final String[] str = new String[1];
+            final String[] receiveMsg = new String[1];
+            final String[] string = new String[1];
+            final Thread th = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // TODO Auto-generated method stub
+                    Document doc = null;
+                    URL url = null;
+                    try {
+                        url = new URL(URL);
+
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+
+                        if (conn.getResponseCode() == conn.HTTP_OK) {
+                            InputStreamReader tmp = new InputStreamReader(conn.getInputStream(), "UTF-8");
+                            BufferedReader reader = new BufferedReader(tmp);
+                            StringBuffer buffer = new StringBuffer();
+                            while ((str[0] = reader.readLine()) != null) {
+                                buffer.append(str[0]);
+                            }
+                            receiveMsg[0] = buffer.toString();
+                            Log.i("receiveMsg : ", receiveMsg[0]);
+
+                            reader.close();
+                        } else {
+                            Log.i("통신 결과", conn.getResponseCode() + "에러");
+                        }
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            th.start();
+            th.join();
+            String price = null;
+            try {
+                JSONObject jObject = new JSONObject(receiveMsg[0]);
+
+                // menu jsonobject 생성
+                JSONObject menuObject = jObject.getJSONObject("data");
+
+                // "id" 속성값 추출
+                price = menuObject.getString("closing_price");
+                Log.d("<>", price);
+            } catch (JSONException e) {
+                Log.i("에러",e.toString());
+            }
+
+            return price;
+        }
+        public String[] CoinParsingAll(final String URL) throws InterruptedException {
+            /**
+             * 빗썸 기준입니다.
+             * 코인의 현재가,고가,저가,평균거래량을 가져옵니다.
+             * 사용법↓
+             * var CoinStat = new Array(4);
+             * CoinStat = replier.CoinParsingAll("https://api.bithumb.com/public/ticker/BCH"); //비트코인 캐시 정보
+             * var opening_price = CoinStat[0];
+             * var min_price = CoinStat[1];
+             * var max_price = CoinStat[2];
+             * var a = CoinStat[3];
+             */
+            final String[] str = new String[1];
+            final String[] receiveMsg = new String[1];
+            final String[] string = new String[1];
+            final Thread th = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    // TODO Auto-generated method stub
+                    Document doc = null;
+                    URL url = null;
+                    try {
+                        url = new URL(URL);
+
+                        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                        conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded;charset=UTF-8");
+
+                        if (conn.getResponseCode() == conn.HTTP_OK) {
+                            InputStreamReader tmp = new InputStreamReader(conn.getInputStream(), "UTF-8");
+                            BufferedReader reader = new BufferedReader(tmp);
+                            StringBuffer buffer = new StringBuffer();
+                            while ((str[0] = reader.readLine()) != null) {
+                                buffer.append(str[0]);
+                            }
+                            receiveMsg[0] = buffer.toString();
+                            Log.i("receiveMsg : ", receiveMsg[0]);
+
+                            reader.close();
+                        } else {
+                            Log.i("통신 결과", conn.getResponseCode() + "에러");
+                        }
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+            th.start();
+            th.join();
+            String[] CoinStat = new String[4];
+            try {
+                JSONObject jObject = new JSONObject(receiveMsg[0]);
+
+                // menu jsonobject 생성
+                JSONObject menuObject = jObject.getJSONObject("data");
+
+                // "id" 속성값 추출
+                CoinStat[0] = menuObject.getString("opening_price");
+                CoinStat[1] = menuObject.getString("min_price");
+                CoinStat[2] = menuObject.getString("max_price");
+                CoinStat[3] = menuObject.getString("average_price");
+            } catch (JSONException e) {
+                Log.i("에러",e.toString());
+            }
+
+            return CoinStat;
         }
 
         public String CurrentTime() {

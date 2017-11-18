@@ -29,9 +29,8 @@ public class MainActivity extends AppCompatActivity {
     private static String PREFS_KEY = "bot";
     private static String ON_KEY = "on";
     private boolean granted = true;
-    static TextView tv1,tv2,tv3;
+    static TextView tv2,tv3;
     Script ErrorCheck;
-    int PrerequisiteCondition = 0;
     // UI
     /*
     TedPermission,jsoup 라이브러리를 사용하였습니다.
@@ -53,32 +52,22 @@ public class MainActivity extends AppCompatActivity {
 
             }
         };
-        new TedPermission(this)
-                .setPermissionListener(permissionlistener)
-                .setRationaleMessage("JS파일 생성을 위해 반드시 허용을 하셔야 합니다.") //창띄우기전에 설명해줌
-                .setDeniedMessage("거부하시면 안돌아갑니다.")
-                .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                .check();
-        tv1 = (TextView)findViewById(R.id.textView2);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            //마쉬 멜로우 이상은 팝업을 통해 권한 허용을 해야합니다.
+            new TedPermission(this)
+                    .setPermissionListener(permissionlistener)
+                    .setRationaleMessage("JS파일 생성을 위해 반드시 허용을 하셔야 합니다.") //창띄우기전에 설명해줌
+                    .setDeniedMessage("거부하시면 안돌아갑니다.")
+                    .setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    .check();
+        }
+        else{
+            //마쉬 멜로우 이하일때
+        }
+
         tv2 = (TextView)findViewById(R.id.textView3);
         tv3 = (TextView)findViewById(R.id.textView);
         String version = Build.VERSION.RELEASE;
-        if(5.0 <= Float.parseFloat(version)) {
-            tv1.setText("OS 버전이 5.0 이상이라 사용 가능합니다.\n");
-        }
-        else{
-            tv1.setText("OS 버전이 5.0 이하라서 사용 불가능합니다.\n");
-            tv1.setTextColor(Color.parseColor("#1DDB16"));
-            PrerequisiteCondition++;
-        }
-        if(null == getPackageManager().getLaunchIntentForPackage("com.google.android.wearable.app")){
-            tv1.setText(tv1.getText().toString()+"Android Wear를 설치해야 합니다!\n");
-            tv1.setTextColor(Color.parseColor("#1DDB16"));
-            PrerequisiteCondition++;
-        }
-        else {
-            tv1.setText(tv1.getText().toString()+"Android Wear가 설치되어있습니다.\n");
-        }
         if(ErrorCheck == null){
             tv2.setText("JS 문법적인 문제가 있습니다.");
             tv2.setTextColor(Color.parseColor("#FF0000"));
@@ -86,12 +75,6 @@ public class MainActivity extends AppCompatActivity {
         else{
             tv2.setText("JS 문법적인 문제가 없습니다.");
             tv2.setTextColor(Color.parseColor("#1DDB16"));
-        }
-        if(PrerequisiteCondition == 0){
-            tv3.setVisibility(View.INVISIBLE);
-        }
-        else{
-            tv3.setVisibility(View.VISIBLE);
         }
         Switch onOffSwitch = (Switch) findViewById(R.id.switch1);
         onOffSwitch.setChecked(getOn(this));

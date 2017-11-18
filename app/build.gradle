@@ -5,10 +5,10 @@ android {
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "com.plorence.jskakaobot"
-        minSdkVersion 21
+        minSdkVersion 18
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName '1.12'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -36,4 +36,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     provided 'org.jbundle.util.osgi.wrapped:org.jbundle.util.osgi.wrapped.org.apache.http.client:4.1.2'
     compile project(':tedpermission')
+    compile 'com.android.support:cardview-v7:26.0.0-alpha1'
 }
